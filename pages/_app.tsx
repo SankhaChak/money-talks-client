@@ -1,8 +1,14 @@
-import '../styles/globals.css';
-import '@rainbow-me/rainbowkit/styles.css';
-import { getDefaultWallets, RainbowKitProvider } from '@rainbow-me/rainbowkit';
-import type { AppProps } from 'next/app';
-import { configureChains, createConfig, WagmiConfig } from 'wagmi';
+import "../styles/globals.css";
+import "@rainbow-me/rainbowkit/styles.css";
+import merge from "lodash.merge";
+import {
+  darkTheme,
+  getDefaultWallets,
+  RainbowKitProvider,
+  type Theme,
+} from "@rainbow-me/rainbowkit";
+import type { AppProps } from "next/app";
+import { configureChains, createConfig, WagmiConfig } from "wagmi";
 import {
   arbitrum,
   goerli,
@@ -11,8 +17,18 @@ import {
   polygon,
   base,
   zora,
-} from 'wagmi/chains';
-import { publicProvider } from 'wagmi/providers/public';
+} from "wagmi/chains";
+import { alchemyProvider } from "wagmi/providers/alchemy";
+import { publicProvider } from "wagmi/providers/public";
+import { clientEnv } from "../lib/validators/clientEnv";
+import { ThemeProvider } from "../context/Theme";
+
+// const customTheme = merge(darkTheme(), {
+//   colors: {
+//     connectButtonBackground: "#818cf8",
+//     connectButtonInnerBackground: "#818cf8",
+//   },
+// }) as Theme;
 
 const { chains, publicClient, webSocketPublicClient } = configureChains(
   [
@@ -22,14 +38,15 @@ const { chains, publicClient, webSocketPublicClient } = configureChains(
     arbitrum,
     base,
     zora,
-    ...(process.env.NEXT_PUBLIC_ENABLE_TESTNETS === 'true' ? [goerli] : []),
+    // ...(process.env.NEXT_PUBLIC_ENABLE_TESTNETS === "true" ? [goerli] : []),
+    goerli,
   ],
-  [publicProvider()]
+  [alchemyProvider({ apiKey: clientEnv.ALCHEMY_API_KEY }), publicProvider()]
 );
 
 const { connectors } = getDefaultWallets({
-  appName: 'RainbowKit App',
-  projectId: 'YOUR_PROJECT_ID',
+  appName: clientEnv.RAINBOWKIT_APP_NAME,
+  projectId: clientEnv.WALLET_CONNECT_PROJECT_ID,
   chains,
 });
 
@@ -42,11 +59,18 @@ const wagmiConfig = createConfig({
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <WagmiConfig config={wagmiConfig}>
-      <RainbowKitProvider chains={chains}>
-        <Component {...pageProps} />
-      </RainbowKitProvider>
-    </WagmiConfig>
+    <ThemeProvider
+      attribute="class"
+      defaultTheme="dark"
+      enableSystem
+      disableTransitionOnChange
+    >
+      <WagmiConfig config={wagmiConfig}>
+        <RainbowKitProvider chains={chains}>
+          <Component {...pageProps} />
+        </RainbowKitProvider>
+      </WagmiConfig>
+    </ThemeProvider>
   );
 }
 
