@@ -22,6 +22,7 @@ import { alchemyProvider } from "wagmi/providers/alchemy";
 import { publicProvider } from "wagmi/providers/public";
 import { clientEnv } from "../lib/validators/clientEnv";
 import { ThemeProvider } from "../context/Theme";
+import UserProvider from "../context/User";
 
 // const customTheme = merge(darkTheme(), {
 //   colors: {
@@ -67,7 +68,9 @@ function MyApp({ Component, pageProps }: AppProps) {
     >
       <WagmiConfig config={wagmiConfig}>
         <RainbowKitProvider chains={chains}>
-          <Component {...pageProps} />
+          <UserProvider>
+            <Component {...pageProps} />
+          </UserProvider>
         </RainbowKitProvider>
       </WagmiConfig>
     </ThemeProvider>
