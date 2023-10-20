@@ -8,6 +8,7 @@ import {
   DialogTrigger,
 } from "../ui/dialog";
 import { useUserContext } from "../../context/User";
+import NewGroupChatModal from "./NewGroupChatModal";
 
 const ChatsEmptyState = () => {
   const { handleCreateGroupChat } = useUserContext();
@@ -85,10 +86,9 @@ const ChatsEmptyState = () => {
           </DialogTrigger>
           <DialogContent>
             <DialogHeader>
-              <DialogTitle>Are you sure absolutely sure?</DialogTitle>
-              <DialogDescription>
-                This action cannot be undone. This will permanently delete your
-                account and remove your data from our servers.
+              <DialogTitle>Enter your group chat details:</DialogTitle>
+              <DialogDescription className="py-4">
+                <NewGroupChatModal />
               </DialogDescription>
             </DialogHeader>
           </DialogContent>

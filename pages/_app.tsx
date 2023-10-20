@@ -23,6 +23,7 @@ import { publicProvider } from "wagmi/providers/public";
 import { clientEnv } from "../lib/validators/clientEnv";
 import { ThemeProvider } from "../context/Theme";
 import UserProvider from "../context/User";
+import { Toaster } from "react-hot-toast";
 
 // const customTheme = merge(darkTheme(), {
 //   colors: {
@@ -69,6 +70,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       <WagmiConfig config={wagmiConfig}>
         <RainbowKitProvider chains={chains}>
           <UserProvider>
+            <Toaster position="top-right" />
             <Component {...pageProps} />
           </UserProvider>
         </RainbowKitProvider>
