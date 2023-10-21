@@ -79,7 +79,11 @@ const NewGroupChatModal = (props: Props) => {
               <FormItem>
                 <FormLabel>Group Name</FormLabel>
                 <FormControl>
-                  <Input placeholder="Enter your group name here" {...field} />
+                  <Input
+                    disabled={isGroupBeingCreated}
+                    placeholder="Enter your group name here"
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -93,6 +97,7 @@ const NewGroupChatModal = (props: Props) => {
                 <FormLabel>Group Description</FormLabel>
                 <FormControl>
                   <Input
+                    disabled={isGroupBeingCreated}
                     placeholder="Enter your group description here"
                     {...field}
                   />

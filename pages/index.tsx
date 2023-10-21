@@ -13,19 +13,7 @@ import ExistingChats from "../components/chat/ExistingChats";
 
 const Home: NextPage = () => {
   const { hasHydrated } = useHydration();
-  const { isLoggedIn, getUserChats, getUserRequests } = useUserContext();
-
-  const [userChats, setUserChats] = useState<IFeeds[]>([]);
-  console.log("🚀 ~ file: index.tsx:20 ~ userChats:", userChats);
-  const [userRequests, setUserRequests] = useState<IFeeds[]>([]);
-  console.log("🚀 ~ file: index.tsx:22 ~ userRequests:", userRequests);
-
-  useEffect(() => {
-    if (isLoggedIn) {
-      getUserChats().then((chats) => setUserChats(chats));
-      getUserRequests().then((requests) => setUserRequests(requests));
-    }
-  }, [isLoggedIn, getUserChats, getUserRequests]);
+  const { isLoggedIn, userChats, userRequests } = useUserContext();
 
   const renderMainComponent = () => {
     if (!isLoggedIn) {
